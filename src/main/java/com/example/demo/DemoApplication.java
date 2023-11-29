@@ -37,17 +37,19 @@ public class DemoApplication {
 	public static void log(String[] args) throws InterruptedException {
 		System.out.println("Hello Application Insights World!");
 		for (int i = 0; i < 10; i++) {
-			log.debug("APIを呼び出しました");
-			log.info("Info");
-			log.warn("Warn");
+			// log.debug("APIを呼び出しました");
+			// log.info("テスト出力情報");
+			// log.warn("Warn");
+			log.warn("{111-222-333}Warn");
+			log.info("{111-222-333}info");
 			try {
-				var content = Files.readString(Paths.get("c:\\notexists"));
+				var content = Files
+						.readString(Paths.get("C:\\Users\\kaede_ozaki\\ホームフォルダ\\★17_次期eBB開発\\07_検証\\13_API\\temp"));
 				System.out.println(content);
 			} catch (IOException e) {
 				log.error("error", e);
 				log.error("non exception error");
 			}
-			Thread.sleep(500);
 		}
 	}
 }
