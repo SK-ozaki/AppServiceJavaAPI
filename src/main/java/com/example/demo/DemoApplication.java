@@ -57,7 +57,7 @@ public class DemoApplication {
 		}
 	}
 
-	@RequestMapping("/api")
+	@RequestMapping("/api/")
 	public String apitop() {
 		return "Welcome!";
 	}
