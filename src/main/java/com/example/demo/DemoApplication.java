@@ -57,6 +57,11 @@ public class DemoApplication {
 		}
 	}
 
+	@RequestMapping("/api")
+	public String apitop() {
+		return "Welcome!";
+	}
+
 	@RequestMapping("/")
 	public String home() {
 		return "★Hello Application Insights World";
