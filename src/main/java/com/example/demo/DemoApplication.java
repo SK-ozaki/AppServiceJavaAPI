@@ -32,12 +32,7 @@ public class DemoApplication {
 	public String Value(@RequestParam String key) {
 
 		// 確認用環境変数"TEST_KeyValut_Secret_01"
-		String value = System.getenv(key);
-		if (value == "" || value == null) {
-			value = "Error:No value.";
-		}
-
-		return value;
+		return System.getenv(key);
 	}
 
 	private static Logger log = LoggerFactory.getLogger(DemoApplication.class);
