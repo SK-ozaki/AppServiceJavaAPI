@@ -7,14 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.TimeZone;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @RestController
@@ -23,48 +27,70 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	@RequestMapping("/")
+	public String home() {
+		return "★Hello Test Web App";
+	}
+
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
 	}
 
-	@GetMapping("/value")
-	public String Value(@RequestParam String key) {
+	private String dbFile = "src\\main\\java\\com\\example\\demo\\datebase.json";
 
-		// 確認用環境変数"TEST_KeyValut_Secret_01"
-		return System.getenv(key);
+	// サイト一覧を取得
+	@GetMapping("/siteRecord")
+	public String SiteRecord(@RequestParam String key) throws JsonProcessingException, IOException {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode json = objectMapper
+				.readTree(Paths.get(dbFile).toFile());
+
+		String jsonstr = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+
+		return jsonstr;
 	}
 
-	private static Logger log = LoggerFactory.getLogger(DemoApplication.class);
+	// サイト情報を追加
+	@GetMapping("/siteAdd")
+	public String SiteAdd(@RequestParam String url, @RequestParam String tag, @RequestParam String comment)
+			throws JsonProcessingException, IOException {
 
-	@GetMapping("/log")
-	public static void log(String[] args) throws InterruptedException {
-		System.out.println("Hello Application Insights World!");
-		for (int i = 0; i < 10; i++) {
-			// log.debug("APIを呼び出しました");
-			// log.info("テスト出力情報");
-			// log.warn("Warn");
-			log.warn("{111-222-333}Warn");
-			log.info("{111-222-333}info");
-			try {
-				var content = Files
-						.readString(Paths.get("C:\\Users\\kaede_ozaki\\ホームフォルダ\\★17_次期eBB開発\\07_検証\\13_API\\temp"));
-				System.out.println(content);
-			} catch (IOException e) {
-				log.error("error", e);
-				log.error("non exception error");
-			}
+		// 現在のデータベースを取得
+		String returnString = "";
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode json = mapper
+				.readTree(Paths.get(dbFile).toFile());
+		JsonSiteLists siteList = mapper.readValue(json.toString(), JsonSiteLists.class);
+
+		// テスト用タグ
+		List<String> tags = new ArrayList<String>();
+		tags.add("");
+
+		// データを追加
+		List<JsonSiteList> list = new ArrayList<JsonSiteList>();
+		JsonSiteList indata = new JsonSiteList(url, tags, comment);
+
+		//// 既存データをリスト化
+		siteList.getsites().forEach(s -> list.add(s));
+
+		//// 新規データを追加
+		list.add(indata);
+		siteList.setsites(list);
+		returnString = siteList.toString();
+
+		try {
+			// JSON文字列に変換
+			returnString = mapper.writeValueAsString(siteList);
+			// データベースを更新
+			mapper.writeValue(new File(dbFile), siteList);
+			return returnString;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return "error";
 		}
-	}
-
-	@RequestMapping("/api/")
-	public String apitop() {
-		return "Welcome!";
-	}
-
-	@RequestMapping("/")
-	public String home() {
-		return "★Hello Application Insights World";
 	}
 
 	@RequestMapping("/time")

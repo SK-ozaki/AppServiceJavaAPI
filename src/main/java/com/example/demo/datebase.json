@@ -1,0 +1,18 @@
+{
+    "sites": [
+        {
+            "siteurl": "https://google.com",
+            "tag": [
+                "test"
+            ],
+            "comment": ""
+        },
+        {
+            "siteurl": "https://yahoo.co.jp",
+            "tag": [
+                ""
+            ],
+            "comment": ""
+        }
+    ]
+}
