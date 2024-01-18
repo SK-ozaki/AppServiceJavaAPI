@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.TimeZone;
@@ -60,10 +60,17 @@ public class DemoApplication {
 		// 現在のデータベースを取得
 		String returnString = "";
 		ObjectMapper mapper = new ObjectMapper();
+		JsonSiteLists siteList;
 
-		JsonNode json = mapper
-				.readTree(Paths.get(dbFile).toFile());
-		JsonSiteLists siteList = mapper.readValue(json.toString(), JsonSiteLists.class);
+		try {
+
+			JsonNode json = mapper
+					.readTree(Paths.get(dbFile).toFile());
+			siteList = mapper.readValue(json.toString(), JsonSiteLists.class);
+
+		} catch (FileNotFoundException e) {
+			return "データベースを読み込めませんでした";
+		}
 
 		// テスト用タグ
 		List<String> tags = new ArrayList<String>();
