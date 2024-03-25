@@ -53,35 +53,6 @@
 			<artifactId>applicationinsights-logging-logback</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.microsoft.azure</groupId>
-			<artifactId>applicationinsights-spring-boot-starter</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>2.12.5</version>
-		</dependency>	
-
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-storage-blob</artifactId>
-			<version>12.24.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-storage-common</artifactId>
-			<version>12.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-identity</artifactId>
-			<version>1.11.1</version>
-		</dependency>
-        
 	</dependencies>
 
 	<build>
@@ -89,11 +60,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.example.demo</mainClass>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
 	
+
 </project>
