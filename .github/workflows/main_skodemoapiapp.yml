@@ -16,6 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Purge artifacts
+        uses: kolpav/purge-artifacts-action@v1
+        with:
+          # Human readable expire duration
+          expire-in: 30 minutes
+          # Github auth token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
